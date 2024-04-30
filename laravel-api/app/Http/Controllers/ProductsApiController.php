@@ -29,6 +29,8 @@ class ProductsApiController extends Controller
         $products->price = $request->price;
         $products->stock = $request->stock;
         $products->save();
+
+        return "effectuer avec succés";
         
     }
 
@@ -61,6 +63,7 @@ class ProductsApiController extends Controller
         $products = Products::find($id);
         $products->update($request->all());
         return $products;
+
     }
 
     /**
