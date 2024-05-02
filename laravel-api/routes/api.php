@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsApiController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\CategoryController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -31,6 +31,14 @@ Route::post('/products', [ProductsApiController::class, 'store'])->middleware('a
 Route::put('/products/{id}', [ProductsApiController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/products/{id}', [ProductsApiController::class, 'destroy'])->middleware('auth:sanctum');
 Route::get('/products/{id}', [ProductsApiController::class, 'show'])->middleware('auth:sanctum');
+
+
+
+Route::get('/categories', [CategoryController::class, 'index'])->middleware('auth:sanctum');
+Route::post('/categories', [CategoryController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/categories/{id}', [CategoryController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->middleware('auth:sanctum');
 
 // Route::apiResource('products', ProductsApiController::class);
 
