@@ -31,8 +31,11 @@ class ProductsApiController extends Controller
         $products->description = $request->description;
         $products->price = $request->price;
         $products->stock = $request->stock;
+        $products->image = $request->image;
         $products->save();
 
+
+        $this->storeImage($products);
 
         $category = json_decode($request->categories);
         $request->merge(["categories" => $category]);
@@ -70,7 +73,7 @@ $categoryTitles = $titleCat->categories->pluck('title');
    
 
     
-    //comme le blog fdp !
+    
 
     public function update(Request $request, $id)
     {
@@ -80,6 +83,7 @@ $categoryTitles = $titleCat->categories->pluck('title');
             'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
+            'image' => 'sometimes|image|max:5000',
         ]);
     
         $products = Product::find($id);
@@ -89,6 +93,9 @@ $categoryTitles = $titleCat->categories->pluck('title');
         $request->merge(["categories" => $category]);
 
         $products->categories()->sync($request->categories);
+
+        $this->storeImage($products);
+
         return $products;
 
     }
@@ -103,5 +110,21 @@ $categoryTitles = $titleCat->categories->pluck('title');
         return "c'est supprmimer bouffon";
         
    
+    }
+
+
+
+
+
+    private function storeImage(Product $products)
+    {
+        if(request('image')) {
+            $res = request('image')->store('avatars', 'public');
+            $products->update([
+                'image' => $res
+            ]);
+            // dump($post);
+            // dd($res);
+        }
     }
 }

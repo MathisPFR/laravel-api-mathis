@@ -21,7 +21,7 @@ class ProductsResource extends JsonResource
             'price' => $this->price,
             'stock' => $this->stock, 
             'category' => $this->categories->pluck('title'),
-           
+            'image' => $this->image,
         ];
     }
 
