@@ -60,7 +60,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return "c'est supprmimer bouffon mais cette fois ci c'est le user c'est différent tu vois c'est comme les products mais pas trop";
+        return "c'est supprmimer mais cette fois ci c'est le user c'est différent tu vois c'est comme les products mais pas trop";
         
    
     }
@@ -79,7 +79,12 @@ class UserController extends Controller
             [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required'
+                'password' => [
+                    'required',
+                    'min:6',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]+$/', // At least one uppercase letter, one lowercase letter, one number, and one special character,
+                    'confirmed',
+                ]
             ]);
 
             if($validateUser->fails()){

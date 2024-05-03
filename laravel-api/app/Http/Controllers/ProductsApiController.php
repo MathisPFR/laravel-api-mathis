@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductsResource;
-use App\Models\Products;
+use App\Models\Product;
+use App\Models\Category;
+
 use Illuminate\Http\Request;
 
 class ProductsApiController extends Controller
@@ -13,7 +15,8 @@ class ProductsApiController extends Controller
      */
     public function index()
     {
-        $products = Products::all();
+        $products = Product::all();
+        
         return ProductsResource::collection($products);
     }
 
@@ -23,12 +26,21 @@ class ProductsApiController extends Controller
     public function store(Request $request)
     {
       
-        $products = new Products;
+        $products = new Product;
         $products->title = $request->title;
         $products->description = $request->description;
         $products->price = $request->price;
         $products->stock = $request->stock;
         $products->save();
+
+
+        $category = json_decode($request->categories);
+        $request->merge(["categories" => $category]);
+
+        $products->categories()->attach($request->categories);
+
+        
+
 
         return "effectuer avec succés";
         
@@ -40,8 +52,18 @@ class ProductsApiController extends Controller
     public function show($id)
     {
         
-        $products= Products::find($id);
-        return $products;
+        $products = Product::find($id);
+        $titleCat = Product::with("categories")->find($id);
+
+$categoryTitles = $titleCat->categories->pluck('title');
+
+
+
+        
+        return response()->json([
+            "products" => $products,
+            "category" => $categoryTitles,
+        ]);
 
     }
 
@@ -60,8 +82,13 @@ class ProductsApiController extends Controller
             'stock' => 'required',
         ]);
     
-        $products = Products::find($id);
+        $products = Product::find($id);
         $products->update($request->all());
+
+        $category = json_decode($request->categories);
+        $request->merge(["categories" => $category]);
+
+        $products->categories()->sync($request->categories);
         return $products;
 
     }
@@ -71,7 +98,7 @@ class ProductsApiController extends Controller
      */
     public function destroy($id)
     {
-        $products = Products::find($id);
+        $products = Product::find($id);
         $products->delete();
         return "c'est supprmimer bouffon";
         

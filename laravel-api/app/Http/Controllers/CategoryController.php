@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
+
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class CategoryController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
-        return $categories;
+        return CategoryResource::collection($categories);
     }
 
     /**
@@ -33,8 +36,17 @@ class CategoryController extends Controller
     public function show($id)
     {
         
-        $category= Category::find($id);
-        return $category;
+        // $category= Category::find($id);
+        $category = Category::with("products")->find($id);
+
+        $productsShow = $category->products->pluck('title');
+
+        return response()->json([
+            // "category" => $category,
+            "category" => $category,
+        ]);
+
+        // return $category;
 
     }
 
