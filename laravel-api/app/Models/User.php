@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,6 +9,50 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *      title="User",
+ *      description="User model",
+ *      @OA\Property(
+ *          property="id",
+ *          type="integer",
+ *          description="The unique identifier for the user",
+ *          example=1
+ *      ),
+ *      @OA\Property(
+ *          property="name",
+ *          type="string",
+ *          description="The name of the user",
+ *          example="John Doe"
+ *      ),
+ *      @OA\Property(
+ *          property="email",
+ *          type="string",
+ *          description="The email address of the user",
+ *          example="john@example.com"
+ *      ),
+ *      @OA\Property(
+ *          property="password",
+ *          type="string",
+ *          description="The password of the user",
+ *          example="secret"
+ *      ),
+ *      @OA\Property(
+ *          property="email_verified_at",
+ *          type="string",
+ *          format="date-time",
+ *          description="The date and time when the email address was verified",
+ *          example="2022-05-01T12:00:00Z"
+ *      ),
+ *      @OA\Property(
+ *          property="profile_photo_url",
+ *          type="string",
+ *          format="url",
+ *          description="The URL of the user's profile photo",
+ *          example="http://example.com/profile.jpg"
+ *      )
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -18,22 +61,12 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -41,20 +74,10 @@ class User extends Authenticatable
         'two_factor_secret',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
-     */
     protected $appends = [
         'profile_photo_url',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
