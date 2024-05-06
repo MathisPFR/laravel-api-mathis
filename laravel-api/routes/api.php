@@ -35,3 +35,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 // Routes pour l'authentification
 Route::post('/auth/register', [UserController::class, 'createUser']);
 Route::post('/auth/login', [UserController::class, 'loginUser']);
+Route::get('/welcome', function () {
+    return "Tu es arrivé sur cette page entre nous tu es une légende !";
+});
