@@ -18,6 +18,7 @@ class CategoryResource extends JsonResource
             
             'title' => $this->title,
             'product' => $this->products,
+            'id' => $this->id,
            
         ];
     }

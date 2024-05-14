@@ -89,10 +89,24 @@ class ProductsApiController extends Controller
 
         $this->storeImage($products);
 
-        $category = json_decode($request->categories);
-        $request->merge(["categories" => $category]);
+       
 
-        $products->categories()->attach($request->categories);
+        // $category = json_decode($request->categories);
+        // $request->merge(["categories" => $category]);
+
+        // $products->categories()->attach($request->categories);
+
+
+        if ($request->has('categories')) {
+            $categories = $request->categories;
+    
+            // Vérifiez si $categories est une chaîne JSON valide
+            if (is_string($categories) && json_decode($categories) !== null) {
+                $categories = json_decode($categories);   
+            }  
+                
+            $products->categories()->attach($categories);
+        }
 
         return "effectuer avec succés"; 
     }
