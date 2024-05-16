@@ -226,7 +226,7 @@ $categoryTitles = $titleCat->categories->pluck('title');
             'description' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'image' => 'sometimes|image|max:5000',
+            // 'image' => 'sometimes|image|max:5000',
         ]);
     
         $products = Product::find($id);
